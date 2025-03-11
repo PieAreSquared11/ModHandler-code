@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -18,6 +19,7 @@ namespace ModHandler
                 if (args[0] == "new" & args.Length == 2)
                 {
                     NewProj(args[1]);
+
                     return;
                 }
 
@@ -97,6 +99,22 @@ namespace ModHandler
             }
         }
 
+        public static void Open(string App, string Args)
+        {
+            using (Process MyProcess = new Process())
+            {
+                MyProcess.StartInfo.UseShellExecute = true;
+                MyProcess.StartInfo.FileName = App;
+                MyProcess.StartInfo.Arguments = Args;
+                MyProcess.StartInfo.CreateNoWindow = true;
+                MyProcess.Start();
+            }
+        }
+
+        public static void OpenVsCode(string FilePath)
+        {
+            Open("code", FilePath);
+        }
         static string ExeDir()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -116,7 +134,7 @@ namespace ModHandler
         static void AddModDir(string Id)
         {
             string Dir = Directory.GetCurrentDirectory();
-            File.AppendAllLines("./dirs.txt", [Id + ": " + Dir]);
+            File.AppendAllLines(ExeDir() + "/dirs.txt", [Id + ": " + Dir]);
 
             Console.WriteLine("Path added successfully.");
         }
@@ -212,7 +230,7 @@ namespace ModHandler
         {            
             if (GetPath(Id) != null)
             {
-                File.WriteAllText("./curdir.txt", Id);
+                File.WriteAllText(ExeDir() + "/curdir.txt", Id);
                 Console.WriteLine("ID set as current");
             } else
             {
@@ -314,6 +332,15 @@ namespace ModHandler
             } else
             {
                 Console.WriteLine("ERROR: PLEASE SAC AN ID: mh sac <id>");
+                return;
+            }
+
+            Console.WriteLine("Project successfully created.");
+            Console.Write("Open VS Code (y/n)?");
+
+            if (Console.ReadLine() == "y")
+            {
+                OpenVsCode(Path + "\\" + Name);
             }
         }
 
