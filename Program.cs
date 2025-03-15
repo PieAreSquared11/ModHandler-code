@@ -148,9 +148,9 @@ namespace ModHandler
                 return null;
             }
 
-            if (File.Exists("./dirs.txt") && File.ReadAllText("./dirs.txt") != "")
+            if (File.Exists(ExeDir() + "/dirs.txt") && File.ReadAllText(ExeDir() + "/dirs.txt") != "")
             {
-                Lines = File.ReadAllLines("./dirs.txt");
+                Lines = File.ReadAllLines(ExeDir() + "/dirs.txt");
             } else
             {
                 Console.WriteLine("ERROR: No IDs have been created.");
@@ -178,11 +178,11 @@ namespace ModHandler
 
         static string[] GetIDs()
         {
-            if (File.Exists("./dirs.txt"))
+            if (File.Exists(ExeDir() + "/dirs.txt"))
             {
-                if (File.ReadAllText("./dirs.txt") != "") 
+                if (File.ReadAllText(ExeDir() + "/dirs.txt") != "") 
                 {
-                    return File.ReadAllLines("./dirs.txt");
+                    return File.ReadAllLines(ExeDir() + "/dirs.txt");
                 } else
                 {
                     return null;
@@ -197,7 +197,7 @@ namespace ModHandler
         {
             if (GetPath(ID) != null)
             {
-                List<string> Lines = new List<string>(File.ReadAllLines("./dirs.txt"));
+                List<string> Lines = new List<string>(File.ReadAllLines(ExeDir() + "/dirs.txt"));
 
                 foreach (var Line in Lines.ToArray())
                 {
@@ -207,7 +207,7 @@ namespace ModHandler
                     }
                 }
 
-                File.WriteAllLines("./dirs.txt", Lines);
+                File.WriteAllLines(ExeDir() + "/dirs.txt", Lines);
                 Console.WriteLine("ID removed successfully");
             } else
             {
@@ -217,10 +217,10 @@ namespace ModHandler
 
         static void ClearAll()
         {
-            if (File.Exists("./dirs.txt") & File.Exists("./curdir.txt"))
+            if (File.Exists(ExeDir() + "/dirs.txt") & File.Exists(ExeDir() + "/curdir.txt"))
             {
-                File.Delete("./dirs.txt");
-                File.Delete("./curdir.txt");
+                File.Delete(ExeDir() + "/dirs.txt");
+                File.Delete(ExeDir() + "/curdir.txt");
 
                 Console.WriteLine("Everything was successfully cleared.");
             }
@@ -237,13 +237,14 @@ namespace ModHandler
                 Console.WriteLine("ERROR: ID " + Id + " Nonexistent");
             }
 
+            // TODO: REPLACE ALL ./DIRS.TXT OR ./CURDIRS.TXT REFERENCES TO USE EXEDIR()
         }
 
         static string GetSACked()
         {
-            if (File.Exists("./curdir.txt") && File.ReadAllText("./curdir.txt") != "")
+            if (File.Exists(ExeDir() + "/curdir.txt") && File.ReadAllText(ExeDir() + "/curdir.txt") != "")
             {
-                return File.ReadAllText("./curdir.txt");
+                return File.ReadAllText(ExeDir() + "/curdir.txt");
             } else
             {
                 return null;
